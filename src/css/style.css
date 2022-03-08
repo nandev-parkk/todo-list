@@ -128,7 +128,7 @@ input {
 }
 
 .container .info {
-  padding: 30px 20px;
+  padding: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -198,7 +198,7 @@ input {
 
 .container .modal .form .title,
 .container .modal .form input,
-.container .modal .form button.submit {
+.container .modal .form button.register {
   position: absolute;
   left: 50%;
 }
@@ -213,7 +213,20 @@ input {
   font-size: 16px;
 }
 
-.container .modal .form button.submit {
+.container .modal .form .error {
+  color: red;
+  font-size: 12px;
+  display: none;
+  position: absolute;
+  top: 61%;
+  left: 55px;
+}
+
+.container .modal .form .error.visible {
+  display: block;
+}
+
+.container .modal .form button.register {
   bottom: 40px;
   transform: translateX(-50%);
   background-color: var(--color-blue);
@@ -223,7 +236,7 @@ input {
   transition: var(--transition);
 }
 
-.container .modal .form button.submit:hover {
+.container .modal .form button.register:hover {
   background-color: var(--color-dark-blue);
 }
 

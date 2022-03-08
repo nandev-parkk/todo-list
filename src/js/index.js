@@ -78,9 +78,10 @@ const taskEl = infoEl.querySelector(".task");
 const addBtnEl = infoEl.querySelector("button.add");
 const modalEl = infoEl.querySelector(".modal");
 const modalBgEl = modalEl.querySelector(".bg");
-const submitBtnEl = modalEl.querySelector("form button.submit");
-
-console.log(taskEl, modalEl, modalBgEl, submitBtnEl);
+const registerBtnEl = modalEl.querySelector("form button.register");
+const storage = window.localStorage;
+const inputEl = modalEl.querySelector("input");
+const errorEl = modalEl.querySelector(".error");
 
 addBtnEl.addEventListener("click", () => {
   modalEl.classList.add("visible");
@@ -88,8 +89,32 @@ addBtnEl.addEventListener("click", () => {
 
 modalBgEl.addEventListener("click", () => {
   modalEl.classList.remove("visible");
+  errorEl.classList.remove("visible");
 });
 
-submitBtnEl.addEventListener("click", () => {
-  modalEl.classList.remove("visible");
+registerBtnEl.addEventListener("click", () => {
+  if (inputEl.value === "") {
+    modalEl.classList.add("visible");
+    // input에 아무것도 입력 안하고 button 클릭시 error 처리
+    errorEl.classList.add("visible");
+  } else {
+    modalEl.classList.remove("visible");
+    // localStorage에 데이터 저장
+    storage.setItem(inputEl.value, inputEl.value);
+  }
 });
+
+// input에 아무것도 입력 안하고 button 클릭시 error 처리
+inputEl.addEventListener("keydown", () => {
+  if (inputEl.value !== "") {
+    errorEl.classList.remove("visible");
+  }
+});
+
+console.log(inputEl);
+
+// list element에 localStorage에 있는 데이터 출력
+const listContainer = document.querySelector(".list");
+const listEl = listContainer.querySelector("li");
+
+console.log(storage.getItem("hello"));
