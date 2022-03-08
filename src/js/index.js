@@ -71,8 +71,7 @@ function getCurrentDate() {
 
 setInterval(getCurrentDate, 1000);
 
-// add 버튼 클릭시 to do list 등록 모달 open
-
+// add 버튼 클릭시 to do list 등록 모달 open & close
 const infoEl = document.querySelector(".info");
 const taskEl = infoEl.querySelector(".task");
 const addBtnEl = infoEl.querySelector("button.add");
@@ -83,6 +82,9 @@ const storage = window.localStorage;
 const inputEl = modalEl.querySelector("input");
 const errorEl = modalEl.querySelector(".error");
 
+// task에 현재 할 일 목록 수 출력
+taskEl.textContent = `${storage.length} TASKS`;
+
 addBtnEl.addEventListener("click", () => {
   modalEl.classList.add("visible");
 });
@@ -90,6 +92,8 @@ addBtnEl.addEventListener("click", () => {
 modalBgEl.addEventListener("click", () => {
   modalEl.classList.remove("visible");
   errorEl.classList.remove("visible");
+  // input에 입력한 값을 초기화
+  inputEl.value = null;
 });
 
 registerBtnEl.addEventListener("click", () => {
@@ -101,6 +105,10 @@ registerBtnEl.addEventListener("click", () => {
     modalEl.classList.remove("visible");
     // localStorage에 데이터 저장
     storage.setItem(inputEl.value, inputEl.value);
+    // task에 현재 할 일 목록 수 최신화
+    taskEl.textContent = `${storage.length} TASKS`;
+    // input에 입력한 값을 초기화
+    inputEl.value = null;
   }
 });
 
@@ -111,10 +119,6 @@ inputEl.addEventListener("keydown", () => {
   }
 });
 
-console.log(inputEl);
-
 // list element에 localStorage에 있는 데이터 출력
 const listContainer = document.querySelector(".list");
 const listEl = listContainer.querySelector("li");
-
-console.log(storage.getItem("hello"));
