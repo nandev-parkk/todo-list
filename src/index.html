@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>todo</title>
+    <title>to do list</title>
 
     <!-- noto sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,29 +29,25 @@
   <body>
     <div class="container">
       <div class="inner">
-        <div class="date">
-          <span class="date__day"></span>
-          <span class="date__year"></span>
-          <span class="date__month"></span>
-          <span class="date__date"></span>
+        <div class="item date">
+          <span class="item__day"></span>
+          <span class="item__date"></span>
         </div>
-        <ul class="list">
-          <li>달리기</li>
-        </ul>
-        <div class="info">
-          <div class="task"></div>
-          <button type="button" class="add">
+        <ul class="list items"></ul>
+        <div class="info item">
+          <div class="item__task"></div>
+          <button type="button" class="item__add">
             ADD NEW <span class="material-icons-outlined"> add </span>
           </button>
-          <div class="modal">
+          <div class="item__modal">
             <div class="bg"></div>
-            <form action="" class="form">
+            <form>
               <fieldset>
                 <legend>to do list</legend>
                 <span class="title">add your to-dos 😝</span>
-                <input type="text" maxlength="30" />
-                <span class="error">empty!</span>
-                <button type="button" class="register">등록</button>
+                <input type="text" maxlength="22" />
+                <span class="error empty">empty!</span>
+                <button class="register">등록</button>
               </fieldset>
             </form>
           </div>

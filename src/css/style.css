@@ -92,9 +92,10 @@ input {
 
 .container .inner {
   background-color: var(--color-white);
-  width: 500px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* DATE */
 .container .date {
   padding: 30px 20px;
   display: flex;
@@ -103,30 +104,45 @@ input {
   font-size: 14px;
 }
 
-.container .date .date__day {
+.container .date .item__day {
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 1px;
   margin-right: 20px;
 }
 
-.container .date .date__year {
-  margin-right: 10px;
+.container .date .item__date {
 }
 
-.container .date .date__month {
-  margin-right: 10px;
-}
-
-.container .date .date__date {
-}
-
+/* LIST */
 .container .list {
   padding: 20px;
   border-top: 1px solid var(--color-gray);
   border-bottom: 1px solid var(--color-gray);
+  height: 700px;
+  overflow: auto;
 }
 
+.container .list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.container .list li:last-child {
+  margin-bottom: 0;
+}
+
+.container .list li button.check {
+}
+
+.container .list li .content {
+  width: 100%;
+  padding: 0 20px;
+}
+
+/* INFO */
 .container .info {
   padding: 20px;
   display: flex;
@@ -135,10 +151,10 @@ input {
   position: relative;
 }
 
-.container .info .task {
+.container .info .item__task {
 }
 
-.container .info .add {
+.container .info .item__add {
   display: flex;
   align-items: center;
   position: relative;
@@ -147,17 +163,17 @@ input {
   padding: 10px;
 }
 
-.container .info .add:hover {
+.container .info .item__add:hover {
   background-color: var(--color-blue);
   color: var(--color-white);
 }
 
-.container .info .add span.material-icons-outlined {
+.container .info .item__add span.material-icons-outlined {
   margin-left: 10px;
   font-size: 20px;
 }
 
-.container .modal {
+.container .item__modal {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -167,43 +183,43 @@ input {
   display: none;
 }
 
-.container .modal.visible {
+.container .item__modal.visible {
   display: block;
 }
 
-.container .modal .bg {
+.container .item__modal .bg {
   background-color: rgba(0, 0, 0, 0.5);
   height: 100%;
 }
 
-.container .modal .form {
+.container .item__modal form {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.container .modal .form fieldset {
+.container .item__modal form fieldset {
   position: relative;
   width: 500px;
   height: 300px;
   background-color: var(--color-white);
 }
 
-.container .modal .form .title {
+.container .item__modal form .title {
   font-size: 20px;
   top: 60px;
   transform: translateX(-50%);
 }
 
-.container .modal .form .title,
-.container .modal .form input,
-.container .modal .form button.register {
+.container .item__modal form .title,
+.container .item__modal form input,
+.container .item__modal form button.register {
   position: absolute;
   left: 50%;
 }
 
-.container .modal .form input {
+.container .item__modal form input {
   top: 50%;
   transform: translate(-50%, -50%);
   box-sizing: border-box;
@@ -213,7 +229,7 @@ input {
   font-size: 16px;
 }
 
-.container .modal .form .error {
+.container .item__modal form .error {
   color: red;
   font-size: 12px;
   display: none;
@@ -222,11 +238,11 @@ input {
   left: 55px;
 }
 
-.container .modal .form .error.visible {
+.container .item__modal form .error.visible {
   display: block;
 }
 
-.container .modal .form button.register {
+.container .item__modal form button.register {
   bottom: 40px;
   transform: translateX(-50%);
   background-color: var(--color-blue);
@@ -236,17 +252,15 @@ input {
   transition: var(--transition);
 }
 
-.container .modal .form button.register:hover {
+.container .item__modal form button.register:hover {
   background-color: var(--color-dark-blue);
 }
 
 /* CURRENT-TIME */
-
 .container .current-time {
   position: fixed;
   top: 40px;
   right: 40px;
-
   display: flex;
   align-items: center;
 }
@@ -275,5 +289,49 @@ input {
   }
   50% {
     color: var(--color-dark-blue);
+  }
+}
+
+@media screen and (max-width: 425px) {
+  /* CONTAINER */
+  .container .inner {
+    width: 80%;
+  }
+
+  /* LIST */
+  .container .list {
+    height: 200px;
+    overflow-y: auto;
+  }
+
+  /* CURRENT-TIME */
+  .container .current-time {
+    right: 20px;
+  }
+
+  .container .current-time span.colon {
+    font-size: 20px;
+  }
+
+  .container .current-time span.time {
+    font-size: 30px;
+  }
+
+  .container .current-time span.am {
+    transform: translateY(6px);
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 426px) and (max-width: 768px) {
+  /* CONTAINER */
+  .container .inner {
+    width: 80%;
+  }
+
+  /* LIST */
+  .container .list {
+    height: 200px;
+    overflow-y: auto;
   }
 }

@@ -1,5 +1,88 @@
 "use strict";
 
+const infoEl = document.querySelector(".info");
+const taskEl = infoEl.querySelector(".item__task");
+const addBtnEl = infoEl.querySelector(".item__add");
+const modalEl = infoEl.querySelector(".item__modal");
+const modalBgEl = modalEl.querySelector(".bg");
+const formEl = modalEl.querySelector("form");
+const registerBtnEl = formEl.querySelector("button.register");
+const inputEl = formEl.querySelector("input");
+const emptyErrorEl = formEl.querySelector(".error.empty");
+const storage = window.localStorage;
+const toDoList = [];
+const TODOS = "todos";
+
+// add 버튼 클릭시 modal open
+addBtnEl.addEventListener("click", openModal);
+
+// modal 배경 클릭시 modal close
+modalBgEl.addEventListener("click", closeModal);
+
+// 등록 버튼 클릭시 to do 등록
+registerBtnEl.addEventListener("click", handleSubmit);
+
+// enter 입력시 to do 등록
+formEl.addEventListener("submit", handleSubmit);
+
+// input에 error 메시지 나타난 상태에서 입력하면 error 메시지 삭제
+inputEl.addEventListener("keydown", (event) => {
+  if (event.value !== "") {
+    emptyErrorEl.classList.remove("visible");
+  }
+});
+
+function saveToDos(content) {
+  const MATERIAL_OUTLINED_ICON = "material-icons-outlined";
+  const MATERIAL_ICON = "material-icons";
+  const id = toDoList.length + 1;
+  const ulEl = document.querySelector(".list");
+  const liEl = document.createElement("li");
+  const checkBtnEl = document.createElement("button");
+  const divEl = document.createElement("div");
+  const delBtnEl = document.createElement("button");
+  const toDos = {
+    id,
+    content,
+  };
+
+  checkBtnEl.classList.add(MATERIAL_OUTLINED_ICON, "check");
+  checkBtnEl.textContent = "circle";
+  divEl.textContent = content;
+  divEl.classList.add("content");
+  delBtnEl.classList.add(MATERIAL_OUTLINED_ICON, "delete");
+  delBtnEl.textContent = "delete";
+  delBtnEl.addEventListener("mouseover", () => {
+    delBtnEl.classList.remove(MATERIAL_OUTLINED_ICON);
+    delBtnEl.classList.add(MATERIAL_ICON);
+  });
+  delBtnEl.addEventListener("mouseout", () => {
+    delBtnEl.classList.add(MATERIAL_OUTLINED_ICON);
+    delBtnEl.classList.remove(MATERIAL_ICON);
+  });
+  liEl.id = id;
+  liEl.appendChild(checkBtnEl);
+  liEl.appendChild(divEl);
+  liEl.appendChild(delBtnEl);
+  ulEl.appendChild(liEl);
+
+  toDoList.push(toDos);
+  storage.setItem(TODOS, JSON.stringify(toDoList));
+}
+
+function deleteToDos() {}
+
+function loadToDos() {
+  const loadedToDos = JSON.parse(storage.getItem(TODOS));
+  if (loadedToDos === null) {
+    return;
+  } else {
+    loadedToDos.forEach((toDo) => {
+      saveToDos(toDo.content);
+    });
+  }
+}
+
 // new Date()를 통해 현재 날짜 가져옴
 function getCurrentDate() {
   const dateObj = new Date();
@@ -11,16 +94,12 @@ function getCurrentDate() {
   const minute = dateObj.getMinutes();
   const second = dateObj.getSeconds();
 
-  // date에 현재 날짜 출력
+  // 현재 날짜 출력
   const dateContainer = document.querySelector(".date");
-  const yearEl = dateContainer.querySelector(".date__year");
-  const monthEl = dateContainer.querySelector(".date__month");
-  const dateEl = dateContainer.querySelector(".date__date");
-  const dayEl = dateContainer.querySelector(".date__day");
+  const dayEl = dateContainer.querySelector(".item__day");
+  const dateEl = dateContainer.querySelector(".item__date");
+  dateEl.textContent = `${year}. ${month}. ${date}. `;
 
-  yearEl.textContent = `${year}.`;
-  monthEl.textContent = `${month}.`;
-  dateEl.textContent = `${date}.`;
   if (day === 0) {
     dayEl.textContent = "SUNDAY,";
   } else if (day === 1) {
@@ -69,56 +148,40 @@ function getCurrentDate() {
   }
 }
 
-setInterval(getCurrentDate, 1000);
-
-// add 버튼 클릭시 to do list 등록 모달 open & close
-const infoEl = document.querySelector(".info");
-const taskEl = infoEl.querySelector(".task");
-const addBtnEl = infoEl.querySelector("button.add");
-const modalEl = infoEl.querySelector(".modal");
-const modalBgEl = modalEl.querySelector(".bg");
-const registerBtnEl = modalEl.querySelector("form button.register");
-const storage = window.localStorage;
-const inputEl = modalEl.querySelector("input");
-const errorEl = modalEl.querySelector(".error");
-
-// task에 현재 할 일 목록 수 출력
-taskEl.textContent = `${storage.length} TASKS`;
-
-addBtnEl.addEventListener("click", () => {
+function openModal() {
   modalEl.classList.add("visible");
-});
+  inputEl.focus();
+}
 
-modalBgEl.addEventListener("click", () => {
+// error 메세지 삭제 및 입력한 input value 초기화하면서 modal close
+function closeModal() {
   modalEl.classList.remove("visible");
-  errorEl.classList.remove("visible");
-  // input에 입력한 값을 초기화
+  emptyErrorEl.classList.remove("visible");
   inputEl.value = null;
-});
+}
 
-registerBtnEl.addEventListener("click", () => {
+// localStorage에 to do 등록 및 modal close
+function handleSubmit(event) {
+  event.preventDefault();
   if (inputEl.value === "") {
-    modalEl.classList.add("visible");
-    // input에 아무것도 입력 안하고 button 클릭시 error 처리
-    errorEl.classList.add("visible");
+    emptyErrorEl.classList.add("visible");
   } else {
-    modalEl.classList.remove("visible");
-    // localStorage에 데이터 저장
-    storage.setItem(inputEl.value, inputEl.value);
-    // task에 현재 할 일 목록 수 최신화
-    taskEl.textContent = `${storage.length} TASKS`;
-    // input에 입력한 값을 초기화
-    inputEl.value = null;
+    saveToDos(inputEl.value);
+    paintTask();
+    closeModal();
   }
-});
+}
 
-// input에 아무것도 입력 안하고 button 클릭시 error 처리
-inputEl.addEventListener("keydown", () => {
-  if (inputEl.value !== "") {
-    errorEl.classList.remove("visible");
-  }
-});
+// task에 현재 to do 목록 수 출력
+function paintTask() {
+  taskEl.textContent = `${toDoList.length} TASKS`;
+}
 
-// list element에 localStorage에 있는 데이터 출력
-const listContainer = document.querySelector(".list");
-const listEl = listContainer.querySelector("li");
+function init() {
+  getCurrentDate();
+  setInterval(getCurrentDate, 1000);
+  loadToDos();
+  paintTask();
+}
+
+init();
